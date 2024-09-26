@@ -31,7 +31,7 @@ class Standing {
     required this.lastFiveMatches,
   });
 
-  static List<MatchResult> _parseLastFiveMatches(List<String> matches) {
+  static List<MatchResult> _parseLastFiveMatches(List<dynamic> matches) {
     return matches.map((match) {
       switch (match) {
         case 'v':
@@ -67,7 +67,7 @@ class Standing {
       won: json['vitorias'],
       draw: json['empates'],
       lost: json['derrotas'],
-      points: json['points'],
+      points: json['pontos'],
       goalsFor: json['gols_pro'],
       goalsAgainst: json['gols_contra'],
       goalDifference: json['saldo_gols'],
