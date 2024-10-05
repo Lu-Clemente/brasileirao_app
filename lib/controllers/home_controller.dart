@@ -10,6 +10,7 @@ class HomeController extends GetxController {
 
   // Use RxList for storing standings reactively
   var standings = <Standing>[].obs;
+  var isLoading = true.obs;
 
   HomeController() {
     final brasileiraoService = BrasileiraoService(
@@ -26,11 +27,13 @@ class HomeController extends GetxController {
   // Fetch standings from the repository and store them in the observable list
   Future<void> fetchStandings() async {
     try {
-      final standingsData = await _standingsRepository.getStandings();
-      standings.assignAll(standingsData); // Update the observable list
+      isLoading.value = true;
+      final standingsList = await _standingsRepository.getStandings();
+      standings.assignAll(standingsList);
     } catch (e) {
-      // Handle any errors
-      Get.snackbar('Error', 'Failed to fetch standings: $e');
+      print('Error fetching standings: $e');
+    } finally {
+      isLoading.value = false;
     }
   }
 }

@@ -1,3 +1,5 @@
+import 'package:brasileirao_app/controllers/is_dev_env.dart';
+import 'package:brasileirao_app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
@@ -12,12 +14,9 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const GetMaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return GetMaterialApp(
+      home: HomeScreen(),
+      debugShowCheckedModeBanner: isDevEnv() ? true : false,
     );
   }
 }
