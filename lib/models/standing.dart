@@ -13,7 +13,7 @@ class Standing {
   final int goalsFor;
   final int goalsAgainst;
   final int goalDifference;
-  final int efficiency;
+  final double efficiency;
   final List<MatchResult> lastFiveMatches;
 
   Standing({
@@ -71,7 +71,7 @@ class Standing {
       goalsFor: json['gols_pro'],
       goalsAgainst: json['gols_contra'],
       goalDifference: json['saldo_gols'],
-      efficiency: json['aproveitamento'],
+      efficiency: (json['aproveitamento'] as num).toDouble(),
       lastFiveMatches: _parseLastFiveMatches(json['ultimos_jogos']),
     );
   }
