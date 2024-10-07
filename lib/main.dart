@@ -1,6 +1,6 @@
 import 'package:brasileirao_app/controllers/is_dev_env.dart';
 import 'package:brasileirao_app/controllers/theme_controller.dart';
-import 'package:brasileirao_app/screens/home_screen.dart';
+import 'package:brasileirao_app/screens/intro_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
@@ -41,12 +41,12 @@ class MainApp extends StatelessWidget {
             dividerColor: Colors.black45,
             elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.deepOrange[400],
-                  backgroundColor: Colors.deepOrange[400]),
+                  foregroundColor: const Color(0xFFFFD706),
+                  backgroundColor: Colors.white),
             ),
           ),
           themeMode: themeController.currentTheme,
-          home: HomeScreen(),
+          home: const IntroScreen(),
           debugShowCheckedModeBanner: !isDevEnv(),
         ));
   }
