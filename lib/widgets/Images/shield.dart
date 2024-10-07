@@ -1,4 +1,4 @@
-import 'package:brasileirao_app/widgets/svg_display.dart';
+import 'package:brasileirao_app/widgets/Images/svg_display.dart';
 import 'package:flutter/material.dart';
 
 class Shield extends StatelessWidget {
