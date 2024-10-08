@@ -5,14 +5,14 @@ import 'package:brasileirao_app/services/dio_client.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 
-class HomeController extends GetxController {
+class StandingsController extends GetxController {
   late StandingsRepository _standingsRepository;
 
   // Use RxList for storing standings reactively
   var standings = <Standing>[].obs;
   var isLoading = true.obs;
 
-  HomeController() {
+  StandingsController() {
     final brasileiraoService = BrasileiraoService(
       DioClient(
         dio: Dio(),
