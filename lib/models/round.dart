@@ -1,10 +1,10 @@
-enum Status { scheduled, finished }
+enum RoundStatus { scheduled, finished }
 
 class Round {
   final int roundNumber;
   final String name;
   final String slug;
-  final Status status;
+  final RoundStatus status;
 
   Round({
     required this.roundNumber,
@@ -13,22 +13,22 @@ class Round {
     required this.slug,
   });
 
-  static Status _parseStatus(String status) {
+  static RoundStatus _parseStatus(String status) {
     switch (status) {
       case 'agendada':
-        return Status.scheduled;
+        return RoundStatus.scheduled;
       case 'encerrada':
-        return Status.finished;
+        return RoundStatus.finished;
       default:
         throw Exception('Invalid status');
     }
   }
 
-  static String _statusToString(Status status) {
+  static String _statusToString(RoundStatus status) {
     switch (status) {
-      case Status.scheduled:
+      case RoundStatus.scheduled:
         return 'agendada';
-      case Status.finished:
+      case RoundStatus.finished:
         return 'encerrada';
     }
   }

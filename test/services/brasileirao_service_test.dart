@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:brasileirao_app/interfaces/http_client_interface.dart';
 import 'package:brasileirao_app/services/brasileirao_service.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -8,7 +9,9 @@ import '../__mocks__/standings_mock.dart';
 
 class IHttpClientMock extends Mock implements IHttpClient {}
 
-void main() {
+void main() async {
+  // Load the .env file
+  await dotenv.load(fileName: ".env");
   test("brasileirao service should list the competition's standings", () async {
     // Arrange: Create a mock response for Dio
     final responseMock = jsonDecode(standingsMock);
@@ -16,7 +19,8 @@ void main() {
 
     // Mock the behavior of dio.get to return the mockResponse
     when(
-      () => client.get(url, headers: any(named: 'headers')),
+      () => client.get('$baseUrl/campeonatos/10/tabela',
+          headers: any(named: 'headers')),
     ).thenAnswer(
       (_) async => responseMock,
     );

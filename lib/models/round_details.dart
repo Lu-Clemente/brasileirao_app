@@ -1,42 +1,42 @@
 import 'package:brasileirao_app/models/competition_match.dart';
+import 'package:brasileirao_app/models/competition_match_details.dart';
 import 'package:brasileirao_app/models/round.dart';
 import 'package:brasileirao_app/models/round_slug.dart';
 
 class RoundDetails {
   final int roundNumber;
   final String name;
-  final RoundSlug slug;
-  final Status status;
-  final Round nextRound;
-  final Round previousRound;
-  final List<CompetitionMatch> matches;
+  final RoundStatus status;
+  final Round? nextRound;
+  final Round? previousRound;
+  /* final List<CompetitionMatch> matches; */
+  final List<CompetitionMatchDetails> matches;
 
   RoundDetails({
     required this.roundNumber,
     required this.name,
     required this.status,
-    required this.nextRound,
-    required this.previousRound,
+    this.nextRound,
+    this.previousRound,
     required this.matches,
-    required this.slug,
   });
 
-  static Status _parseStatus(String status) {
+  static RoundStatus _parseStatus(String status) {
     switch (status) {
       case 'agendada':
-        return Status.scheduled;
+        return RoundStatus.scheduled;
       case 'encerrada':
-        return Status.finished;
+        return RoundStatus.finished;
       default:
         throw Exception('Invalid status');
     }
   }
 
-  static String _statusToString(Status status) {
+  static String _statusToString(RoundStatus status) {
     switch (status) {
-      case Status.scheduled:
+      case RoundStatus.scheduled:
         return 'agendada';
-      case Status.finished:
+      case RoundStatus.finished:
         return 'encerrada';
     }
   }
@@ -46,12 +46,26 @@ class RoundDetails {
       roundNumber: json['rodada'],
       name: json['nome'],
       status: _parseStatus(json['status']),
-      nextRound: Round.fromJson(json['proxima_rodada']),
-      previousRound: Round.fromJson(json['rodada_anterior']),
-      matches: (json['partidas'] as List<dynamic>)
-          .map((e) => CompetitionMatch.fromJson(e))
+      nextRound: json['proxima_rodada'] != null
+          ? Round.fromJson(json['proxima_rodada'])
+          : null,
+      previousRound: json['rodada_anterior'] != null
+          ? Round.fromJson(json['rodada_anterior'])
+          : null,
+      matches: (json['partidas'] as List)
+          .map((e) => CompetitionMatchDetails.fromJson(e))
           .toList(),
-      slug: json['slug'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'rodada': roundNumber,
+      'nome': name,
+      'status': _statusToString(status),
+      'proxima_rodada': nextRound?.toJson(),
+      'rodada_anterior': previousRound?.toJson(),
+      'partidas': matches.map((e) => e.toJson()).toList(),
+    };
   }
 }
