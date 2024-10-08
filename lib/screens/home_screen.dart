@@ -1,3 +1,4 @@
+import 'package:brasileirao_app/controllers/app_bar_controller.dart';
 import 'package:brasileirao_app/controllers/rounds_controller.dart';
 import 'package:brasileirao_app/controllers/theme_controller.dart';
 import 'package:brasileirao_app/widgets/AppBar/custom_app_bar.dart';
@@ -6,37 +7,17 @@ import 'package:brasileirao_app/widgets/Lists/rounds_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  late final roundsController = Get.put(RoundsController());
-  late final themeController = Get.find<ThemeController>();
-
-  final ScrollController _scrollController = ScrollController();
-  double _appBarHeight = 340.0; // Default app bar height
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(_onScroll);
-  }
-
-  void _onScroll() {
-    setState(() {
-      // Adjust the height based on scroll offset, but don't let it go below 120.0
-      _appBarHeight = (340.0 - _scrollController.offset).clamp(120.0, 340.0);
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    String getBannerImage() {
-      if (_appBarHeight > 280) {
+    final roundsController = Get.put(RoundsController());
+    final themeController = Get.find<ThemeController>();
+    final appBarController = Get.put(AppBarController());
+
+    String getBannerImage(double appBarHeight) {
+      if (appBarHeight > 280) {
         return 'assets/images/banner.png';
       } else {
         if (themeController.themeMode.value == ThemeMode.dark) {
@@ -47,8 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
 
-    Color getIconColor() {
-      if (_appBarHeight > 280) {
+    Color getIconColor(double appBarHeight) {
+      if (appBarHeight > 280) {
         return Colors.white;
       } else {
         if (themeController.themeMode.value == ThemeMode.dark) {
@@ -59,39 +40,43 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
 
-    return Scaffold(
-      appBar: CustomAppBar(
-        title: '',
-        preferredSize: Size.fromHeight(_appBarHeight),
-        backgroundImage: getBannerImage(),
-        actions: [
-          ThemeSwicther(
-            themeController: themeController,
-            borderVisible: _appBarHeight > 280,
-            iconColor: getIconColor(),
-          )
-        ],
-      ),
-      body: Obx(() {
-        if (roundsController.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
-        }
+    return Obx(() {
+      final appBarHeight = appBarController.appBarHeight.value;
+      return Scaffold(
+        appBar: CustomAppBar(
+          title: '',
+          preferredSize: Size.fromHeight(appBarHeight),
+          backgroundImage: getBannerImage(appBarHeight),
+          actions: [
+            ThemeSwicther(
+              themeController: themeController,
+              borderVisible: appBarHeight > 280,
+              iconColor: getIconColor(appBarHeight),
+            )
+          ],
+        ),
+        body: Obx(() {
+          if (roundsController.isLoading.value) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-        if (roundsController.rounds.isEmpty) {
-          return const Center(child: Text('Nenhuma rodada encontrada'));
-        } else {
-          return Column(
-            children: [
-              Expanded(
-                child: RoundsList(
-                  scrollController: _scrollController,
-                  roundsController: roundsController,
+          if (roundsController.rounds.isEmpty) {
+            return const Center(child: Text('Nenhuma rodada encontrada'));
+          } else {
+            return Column(
+              children: [
+                Expanded(
+                  child: RoundsList(
+                    scrollController: appBarController
+                        .scrollController, // Use the controller's scroll controller
+                    roundsController: roundsController,
+                  ),
                 ),
-              ),
-            ],
-          );
-        }
-      }),
-    );
+              ],
+            );
+          }
+        }),
+      );
+    });
   }
 }

@@ -30,47 +30,47 @@ class StandingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        title: '',
-        backgroundImage: getBannerImage(),
-        preferredSize: const Size.fromHeight(120),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: getIconColor(),
-          ),
-          onPressed: () {
-            Get.back();
-          },
-        ),
-        actions: [
-          ThemeSwicther(
-            themeController: themeController,
-            iconColor: getIconColor(),
-            borderVisible: false,
-          )
-        ],
-      ),
-      body: Obx(() {
-        if (standingsController.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        if (standingsController.standings.isEmpty) {
-          return const Center(child: Text('Tabela indisponível'));
-        } else {
-          return Column(
-            children: [
-              Expanded(
-                child: StandingsList(
-                  standingsController: standingsController,
-                ),
+    return Obx(() => Scaffold(
+          appBar: CustomAppBar(
+            title: '',
+            backgroundImage: getBannerImage(),
+            preferredSize: const Size.fromHeight(120),
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: getIconColor(),
               ),
+              onPressed: () {
+                Get.back();
+              },
+            ),
+            actions: [
+              ThemeSwicther(
+                themeController: themeController,
+                iconColor: getIconColor(),
+                borderVisible: false,
+              )
             ],
-          );
-        }
-      }),
-    );
+          ),
+          body: Obx(() {
+            if (standingsController.isLoading.value) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (standingsController.standings.isEmpty) {
+              return const Center(child: Text('Tabela indisponível'));
+            } else {
+              return Column(
+                children: [
+                  Expanded(
+                    child: StandingsList(
+                      standingsController: standingsController,
+                    ),
+                  ),
+                ],
+              );
+            }
+          }),
+        ));
   }
 }
