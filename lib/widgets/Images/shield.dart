@@ -19,15 +19,12 @@ class Shield extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: size,
-      child: Hero(
-        tag: imageSrc,
-        child: SvgDisplay(
-          source: imageSrc,
-          width: size,
-          height: size,
-          isAsset: isAsset,
-          fit: fit,
-        ),
+      child: SvgDisplay(
+        source: imageSrc,
+        width: size,
+        height: size,
+        isAsset: isAsset,
+        fit: fit,
       ),
     );
   }
