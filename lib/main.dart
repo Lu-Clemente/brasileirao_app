@@ -47,7 +47,7 @@ class MainApp extends StatelessWidget {
           ),
           themeMode: themeController.currentTheme,
           home: const IntroScreen(),
-          debugShowCheckedModeBanner: !isDevEnv(),
+          debugShowCheckedModeBanner: isDevEnv(),
         ));
   }
 }

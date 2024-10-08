@@ -11,6 +11,7 @@ class CompetitionMatch {
   final MatchStatus status;
   final Team homeTeam;
   final Team visitorsTeam;
+  final String arena;
 
   CompetitionMatch({
     required this.matchId,
@@ -21,6 +22,7 @@ class CompetitionMatch {
     required this.status,
     required this.homeTeam,
     required this.visitorsTeam,
+    required this.arena,
   });
 
   static MatchStatus _parseStatus(String status) {
@@ -53,6 +55,7 @@ class CompetitionMatch {
       status: _parseStatus(json['status']),
       homeTeam: Team.fromJson(json['time_mandante']),
       visitorsTeam: Team.fromJson(json['time_visitante']),
+      arena: json['estadio']['nome_popular'],
     );
   }
 
@@ -66,6 +69,7 @@ class CompetitionMatch {
       'status': _statusToString(status),
       'time_mandante': homeTeam.toJson(),
       'time_visitante': visitorsTeam.toJson(),
+      'estadio': {'nome_popular': arena},
     };
   }
 }

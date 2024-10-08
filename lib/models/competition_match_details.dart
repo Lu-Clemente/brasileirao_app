@@ -4,18 +4,17 @@ enum MatchStatus { SCHEDULED, FINISHED }
 
 class CompetitionMatchDetails {
   final int matchId;
-  final String result;
   final String slug;
   final String date;
   final String time;
   final String dateIso;
   final MatchStatus status;
-  final String stadiumName;
-  final String roundName;
-  final int visitorsScore;
-  final int homeScore;
   final Team homeTeam;
   final Team visitorsTeam;
+  final String result;
+  final String arena;
+  final int? visitorsScore;
+  final int? homeScore;
 
   CompetitionMatchDetails({
     required this.matchId,
@@ -25,10 +24,9 @@ class CompetitionMatchDetails {
     required this.time,
     required this.dateIso,
     required this.status,
-    required this.stadiumName,
-    required this.roundName,
-    required this.visitorsScore,
-    required this.homeScore,
+    required this.arena,
+    this.visitorsScore,
+    this.homeScore,
     required this.homeTeam,
     required this.visitorsTeam,
   });
@@ -62,8 +60,7 @@ class CompetitionMatchDetails {
       time: json['hora_realizacao'],
       dateIso: json['data_realizacao_iso'],
       status: _parseStatus(json['status']),
-      stadiumName: json['estadio']['nome_popular'],
-      roundName: json['rodada'],
+      arena: json['estadio']['nome_popular'],
       visitorsScore: json['placar_visitante'],
       homeScore: json['placar_mandante'],
       homeTeam: Team.fromJson(json['time_mandante']),
@@ -80,8 +77,7 @@ class CompetitionMatchDetails {
       'hora_realizacao': time,
       'data_realizacao_iso': dateIso,
       'status': _statusToString(status),
-      'estadio': {'nome_popular': stadiumName},
-      'rodada': roundName,
+      'estadio': {'nome_popular': arena},
       'placar_visitante': visitorsScore,
       'placar_mandante': homeScore,
       'time_mandante': homeTeam.toJson(),
