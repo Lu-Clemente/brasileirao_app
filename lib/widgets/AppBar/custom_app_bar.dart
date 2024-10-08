@@ -14,7 +14,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.title,
     this.actions,
     this.leading,
-    this.backgroundImage = 'assets/images/banner-1.png',
+    required this.backgroundImage,
     this.preferredSize = const Size.fromHeight(340.0),
   });
 
