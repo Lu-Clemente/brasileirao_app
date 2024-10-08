@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:brasileirao_app/services/brasileirao_service.dart';
 import 'package:brasileirao_app/services/dio_client.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -9,7 +10,10 @@ import '../__mocks__/standings_mock.dart';
 
 class MockDio extends Mock implements Dio {}
 
-void main() {
+void main() async {
+  // Load the .env file
+  await dotenv.load(fileName: ".env");
+
   late MockDio mockDio;
   late DioClient dioClient;
 
